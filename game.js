@@ -26,7 +26,11 @@ function preload(){
 }
 
 function setup() {
-    createCanvas(800, 600);
+    var cnv = createCanvas(800, 600);
+    let x = (windowWidth - width) / 2;
+    let y = (windowHeight - height) / 2;
+    cnv.position(x, y);
+
     textFont('VT323');
     textSize(40);
     frameRate(60);
@@ -71,9 +75,12 @@ function gameover() {
     imageMode(CENTER);
     image(gameOver, bird.x, bird.y);
     
+    fill(111111);
+    let w = textWidth('Relapse. Press "r" to continue with life   ');
+    rect(24, height/2, w, 48*2);
+
     fill(255,0,0);
-    text('Relapse', width/2, height/2, 200);
-    text('Press "r" to continue with life', width/2 - 80, height/2 + 40, 400);
+    text('Relapse. Press "r" to continue with your life', 32, height/2, 600);
 
     // bird.remove();
     noLoop();
@@ -143,7 +150,7 @@ function draw() {
     bird.update();
 
     //enemies 
-    if (random(1) < 0.05) {
+    if (random(1) < 0.02) {
         monsters.push(new Monster(monster, 800, floor(random(height))));
     }
 
