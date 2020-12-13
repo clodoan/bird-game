@@ -38,7 +38,7 @@ function setup() {
 
     textFont('VT323');
     textSize(40);
-    frameRate(40);
+    frameRate(60);
     reset();
 
     bird = new Sprite(walkAnimation, 100, 100, 0.2, upImg);
