@@ -12,8 +12,6 @@ let monsters = [];
 let frameSize = 128;
 let step = 20;
 let t = 0;
-let score = 0;
-let timer = 10;
 
 //sound
 let monsterSound;
@@ -55,12 +53,13 @@ function draw() {
     background(101010);
 
     //timer and score counters
+    fill(255,0,0);
     text('Score: ' + score, 24, 40);
     textAlign(LEFT);
     text('Time: ' + timer, 480, 40);
 
     //counter and time out
-    if (frameCount % 60 == 0 && timer > 0) {
+    if (frameCount % 40 == 0 && timer > 0) {
         timer --;
     } else if (timer == 0) {
         fartSound.play();

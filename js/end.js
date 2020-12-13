@@ -26,7 +26,7 @@ function gameover() {
 function reset() {
     // clear();
     score = 0;
-    timer = 15;
+    timer = 10;
 
     //remove monsters
     for (i = 0; i < monsters.length; i++ ) {
