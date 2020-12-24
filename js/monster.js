@@ -15,8 +15,9 @@ class Monster {
     }
 
     update(t) {
-        this.y = this.y + sin(2*PI*t);
+        this.y = this.y + sin(4*PI*t);
     }
+    
     move() {
         this.x -= this.speed;
     }

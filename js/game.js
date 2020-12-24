@@ -2,18 +2,20 @@
 let walkSprite;
 let bottleSprite;
 let monsterSprite;
-let clouds;
+// let clouds;
 
 let walkAnimation = [];
 let bottleAnimation = [];
 let monsterAnimation = [];
 let monsters = [];
+let clouds = [];
 
 //settings
 let frameSize = 128;
 let step = 10;
 let t = 0;
-timer = 78;
+let timer = 78;
+let traspolation = 3;
 
 //sound
 let monsterSound;
@@ -26,7 +28,8 @@ function preload(){
     fart = loadImage('/assets/images/bird-jump-128.png');
     walkSprite = loadImage('/assets/sprites/walk-sprite-128.png');
     bottleSprite = loadImage('/assets/sprites/bottle-sprite-128.png');
-    clouds = loadImage('/assets/images/clouds.png');
+    cloudsImg = loadImage('/assets/images/clouds.png');
+    // clouds.push(image(new Cloud(cloudsImg, 200, 240)));
     
     // sounds
     wohooSound = loadSound('/assets/sounds/wohoo.mp4');
@@ -34,7 +37,6 @@ function preload(){
     monsterSound = loadSound('/assets/sounds/monster-appear.mp4');
     fartSound = loadSound('/assets/sounds/fart.mp4');
     blogeekSound = loadSound('/assets/sounds/blogeek.mp4');
-    // backgroundMusic = loadSound('/assets/sounds/background.wav');
 }
 
 function setup() {
@@ -58,8 +60,17 @@ function bottleLocation() {
 function draw() {
     // backgroundMusic.play();
     background (100,192,255);
-    image(clouds, 40, 40, 200, 200);
-    image(clouds, 440, 240, 200, 200);
+
+
+    //clouds
+    if (random(1) < 0.005) {
+        clouds.push(new Cloud(cloudsImg, width ,floor(random(height))));
+    }
+
+    for (c of clouds) {
+        c.show();
+        c.move();
+    }
 
     //timer and score counters
     fill(255,0,0);

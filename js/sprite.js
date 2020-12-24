@@ -8,9 +8,14 @@ class Sprite {
         this.index = 0;
         
         //movement
-        this.agility = 4;
-        this.xagility = 0;
-        this.yagility = 0;
+        this.push = 4;
+
+        this.ydrag = 0.1;
+        this.xdrag = 0.01;
+
+        this.vx = 0;
+        this.vy = 0;
+
         this.velocity = 0;
     }
 
@@ -28,8 +33,11 @@ class Sprite {
     }
 
     update() {
-        this.x = this.x + this.xagility;
-        this.y = this.y + this.yagility;
+        this.x -= this.vx;
+        this.y += this.vy;
+
+        this.vy += this.ydrag;
+        this.vx += this.xdrag;
         
         //endless canvas y
         if (this.y < 0) {
@@ -48,19 +56,18 @@ class Sprite {
 
     //movements
     moveUp() {
-        this.yagility = -this.agility
+        this.vy = -this.push
     }
 
     moveDown() {
-        this.yagility = this.agility;
+        this.vy = this.push
     }
 
     moveRight() {
-        this.xagility = this.agility;
-        // this.rotate(PI / 3.0);
+        this.vx = -this.push
     }
 
     moveLeft() {
-        this.xagility = -this.agility;
+        this.vx = this.push
     }
 }
