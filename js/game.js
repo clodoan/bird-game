@@ -2,6 +2,7 @@
 let walkSprite;
 let bottleSprite;
 let monsterSprite;
+let clouds;
 
 let walkAnimation = [];
 let bottleAnimation = [];
@@ -10,24 +11,30 @@ let monsters = [];
 
 //settings
 let frameSize = 128;
-let step = 20;
+let step = 10;
 let t = 0;
+timer = 78;
 
 //sound
 let monsterSound;
 
 function preload(){
+    // images
     upImg = loadImage('/assets/images/bird-jump-128.png');
     gameOver = loadImage('/assets/images/game-over.png');
     monster = loadImage('/assets/images/monster.png');
     fart = loadImage('/assets/images/bird-jump-128.png');
     walkSprite = loadImage('/assets/sprites/walk-sprite-128.png');
     bottleSprite = loadImage('/assets/sprites/bottle-sprite-128.png');
+    clouds = loadImage('/assets/images/clouds.png');
+    
+    // sounds
     wohooSound = loadSound('/assets/sounds/wohoo.mp4');
     deadSound = loadSound('/assets/sounds/dead.mp4');
     monsterSound = loadSound('/assets/sounds/monster-appear.mp4');
     fartSound = loadSound('/assets/sounds/fart.mp4');
     blogeekSound = loadSound('/assets/sounds/blogeek.mp4');
+    // backgroundMusic = loadSound('/assets/sounds/background.wav');
 }
 
 function setup() {
@@ -39,9 +46,8 @@ function setup() {
     frameRate(60);
     reset();
 
-    bird = new Sprite(walkAnimation, 100, 100, 0.2, upImg);
+    bird = new Sprite(walkAnimation, 100, 100, 0.2);
     bottle = new Sprite(bottleAnimation, 200, 200, 0.4);
-    // video = createVideo(['/assets/videos/video2.mp4', '/assets/videos/video2.webm']);
 }
 
 function bottleLocation() {
@@ -50,7 +56,10 @@ function bottleLocation() {
 }
 
 function draw() {
-    background(101010);
+    // backgroundMusic.play();
+    background (100,192,255);
+    image(clouds, 40, 40, 200, 200);
+    image(clouds, 440, 240, 200, 200);
 
     //timer and score counters
     fill(255,0,0);
@@ -69,7 +78,6 @@ function draw() {
     //update bottle pos when drank
     if (bird.hits(bottle)) {
         bottleLocation();
-        // wohooSound.play();
         blogeekSound.play();
         score ++;
     }
@@ -77,6 +85,7 @@ function draw() {
     //bottle
     bottle.show();
     bottle.animate();
+
     //bird
     bird.show();
     bird.animate();
@@ -97,22 +106,27 @@ function draw() {
             gameover();
         }
     }
+    // clouds 
+
     t = t + 0.01;
 } 
 
 function keyPressed(){
     switch(keyCode) {
         case LEFT_ARROW:
-            bird.moveLeft();
             console.log('left');
+            bird.moveLeft();
             break;
         case RIGHT_ARROW: 
+            console.log('right');
             bird.moveRight();
             break;
         case UP_ARROW:
+            console.log('up');
             bird.moveUp();
             break;
         case DOWN_ARROW:
+            console.log('down');
             bird.moveDown();
             break;
         case 82:

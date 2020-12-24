@@ -18,16 +18,13 @@ function gameover() {
     rect(24, height/2, w, 48*2);
     fill(255,0,0);
     text('Relapse. Press "r" to continue with your life', 32, height/2, 600);
-    // bird.remove();
     noLoop();
 }
 
 
 function reset() {
-    // clear();
     score = 0;
-    timer = 15;
-
+    
     //remove monsters
     for (i = 0; i < monsters.length; i++ ) {
         monsters[i].x = -1000;

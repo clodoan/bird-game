@@ -2,7 +2,7 @@ class Monster {
     constructor(image, x, y) {
         this.x = x;
         this.y = y; 
-        this.speed = 20 - floor(random(19));
+        this.speed = 10 - floor(random(10));
         this.image = image;
     }
 
