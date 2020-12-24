@@ -6,13 +6,11 @@ class Sprite {
         this.len = this.animation.length;
         this.speed = speed;
         this.index = 0;
-        // this.up = upImg;
         
         //movement
-        this.agility = 2;
+        this.agility = 4;
         this.xagility = 0;
         this.yagility = 0;
-        // this.gravity = 0.8;
         this.velocity = 0;
     }
 
