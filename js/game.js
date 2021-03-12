@@ -58,68 +58,71 @@ function bottleLocation() {
 }
 
 function draw() {
-    // backgroundMusic.play();
-    background (100,192,255);
-
-
-    //clouds
-    if (random(1) < 0.005) {
-        clouds.push(new Cloud(cloudsImg, width ,floor(random(height))));
-    }
-
-    for (c of clouds) {
-        c.show();
-        c.move();
-    }
-
-    //timer and score counters
-    fill(255,0,0);
-    text('Score: ' + score, 24, 40);
-    textAlign(LEFT);
-    text('Time: ' + timer, 480, 40);
-
-    //counter and time out
-    if (frameCount % 40 == 0 && timer > 0) {
-        timer --;
-    } else if (timer == 0) {
-        fartSound.play();
-        timeout();
-    }
-    
-    //update bottle pos when drank
-    if (bird.hits(bottle)) {
-        bottleLocation();
-        blogeekSound.play();
-        score ++;
-    }
-
-    //bottle
-    bottle.show();
-    bottle.animate();
-
-    //bird
-    bird.show();
-    bird.animate();
-    bird.update();
-
-    //enemies 
-    if (random(1) < 0.02) {
-        monsters.push(new Monster(monster, 800, floor(random(height))));
-        monsterSound.play();
-    }
-
-    for (m of monsters) {
-        m.show();
-        m.move();
-        m.update(t);
-        if (m.hits(bird)) {
-            deadSound.play();
-            gameover();
+    if (windowWidth < 900) {
+        alert("please open this game in your computer");
+        noLoop();
+    } else {
+        
+        background (100,192,255);
+        //clouds
+        if (random(1) < 0.005) {
+            clouds.push(new Cloud(cloudsImg, width ,floor(random(height))));
         }
-    }
-    // clouds 
 
-    t = t + 0.01;
+        for (c of clouds) {
+            c.show();
+            c.move();
+        }
+
+        //timer and score counters
+        fill(255,0,0);
+        text('Score: ' + score, 24, 40);
+        textAlign(LEFT);
+        text('Time: ' + timer, 480, 40);
+
+        //counter and time out
+        if (frameCount % 40 == 0 && timer > 0) {
+            timer --;
+        } else if (timer == 0) {
+            fartSound.play();
+            timeout();
+        }
+        
+        //update bottle pos when drank
+        if (bird.hits(bottle)) {
+            bottleLocation();
+            blogeekSound.play();
+            score ++;
+        }
+
+        //bottle
+        bottle.show();
+        bottle.animate();
+
+        //bird
+        bird.show();
+        bird.animate();
+        bird.update();
+
+        //enemies 
+        if (random(1) < 0.02) {
+            monsters.push(new Monster(monster, 800, floor(random(height))));
+            monsterSound.play();
+        }
+
+        for (m of monsters) {
+            m.show();
+            m.move();
+            m.update(t);
+            if (m.hits(bird)) {
+                deadSound.play();
+                gameover();
+            }
+        }
+        // clouds 
+
+        t = t + 0.01;
+    }
 } 
 
 function keyPressed(){
