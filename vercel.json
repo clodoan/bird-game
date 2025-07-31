@@ -1,6 +1,5 @@
 {
   "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "framework": "nextjs",
-  "rootDirectory": "react-bird-game/react-bird-game"
+  "framework": "nextjs"
 } 
