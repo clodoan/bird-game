@@ -15,6 +15,8 @@ export default function Game() {
   const [gameState, setGameState] = useState<'playing' | 'gameover' | 'timeout'>('playing');
   const [score, setScore] = useState(0);
   const [timer, setTimer] = useState(78);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   
   // Game objects
   const gameObjects = useRef({
@@ -69,9 +71,17 @@ export default function Game() {
 
   // Reset game
   const resetGame = useCallback(() => {
+    // Cancel any existing animation frame
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = undefined;
+    }
+
     setScore(0);
     setTimer(78);
     setGameState('playing');
+    
+    // Reset game objects
     gameObjects.current.monsters = [];
     gameObjects.current.clouds = [];
     gameObjects.current.t = 0;
@@ -81,11 +91,20 @@ export default function Game() {
       gameObjects.current.bottle.x = Math.floor(Math.random() * (CANVAS_WIDTH - 128));
       gameObjects.current.bottle.y = Math.floor(Math.random() * (CANVAS_HEIGHT - 128));
     }
+
+    if (gameObjects.current.bird) {
+      gameObjects.current.bird.x = 100;
+      gameObjects.current.bird.y = 100;
+      gameObjects.current.bird.vx = 0;
+      gameObjects.current.bird.vy = 0;
+    }
   }, []);
 
   // Initialize game
   const initGame = useCallback(async () => {
     try {
+      setIsLoading(true);
+      
       // Load images
       const [walkSprite, bottleSprite, monsterImg, cloudsImg, gameOverImg, birdJumpImg] = await Promise.all([
         loadImage('/assets/sprites/walk-sprite-128.png'),
@@ -122,9 +141,12 @@ export default function Game() {
       gameObjects.current.bird = new Sprite(gameObjects.current.walkAnimation, 100, 100, 0.2);
       gameObjects.current.bottle = new Sprite(gameObjects.current.bottleAnimation, 200, 200, 0.4);
       
+      setIsInitialized(true);
+      setIsLoading(false);
       resetGame();
     } catch (error) {
       console.error('Failed to load game assets:', error);
+      setIsLoading(false);
     }
   }, [resetGame]);
 
@@ -151,12 +173,12 @@ export default function Game() {
         }
         break;
     }
-  }, [gameState]);
+  }, [gameState, resetGame]);
 
   // Game loop
   const gameLoop = useCallback(() => {
     const canvas = canvasRef.current;
-    if (!canvas || gameState !== 'playing') return;
+    if (!canvas || gameState !== 'playing' || !isInitialized || isLoading) return;
 
     const ctx = canvas.getContext('2d')!;
     const { bird, bottle, monsters, clouds, images, sounds } = gameObjects.current;
@@ -242,7 +264,7 @@ export default function Game() {
 
     gameObjects.current.t += 0.01;
     animationRef.current = requestAnimationFrame(gameLoop);
-  }, [gameState, score, timer]);
+  }, [gameState, score, timer, isInitialized, isLoading]);
 
   // Initialize game on mount
   useEffect(() => {
@@ -251,26 +273,33 @@ export default function Game() {
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
+        animationRef.current = undefined;
       }
     };
   }, [initGame]);
 
-  // Start game loop when game state changes
+  // Start game loop when game state changes or when initialized
   useEffect(() => {
-    if (gameState === 'playing') {
+    if (gameState === 'playing' && isInitialized && !isLoading) {
+      // Cancel any existing animation frame before starting a new one
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
       animationRef.current = requestAnimationFrame(gameLoop);
     } else {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
+        animationRef.current = undefined;
       }
     }
 
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
+        animationRef.current = undefined;
       }
     };
-  }, [gameState, gameLoop]);
+  }, [gameState, isInitialized, isLoading, gameLoop]);
 
   // Add keyboard listeners
   useEffect(() => {
@@ -313,6 +342,16 @@ export default function Game() {
       renderGameOver();
     }
   }, [gameState]);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center">
+        <div className="w-[800px] h-[600px] border-4 border-black bg-sky-300 flex items-center justify-center">
+          <div className="text-2xl font-bold text-blue-900">Loading game...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center">
