@@ -21,7 +21,7 @@ export default function Home() {
         </h3>
       </div> 
       <Game key={key} />
-      <footer className="mt-auto text-center text-blue-900 flex-0">
+      <footer className="mt-auto text-xs text-center text-blue-900 flex-0 flex justify-end w-full px-5">
         <p>Created by <a href="https://claudio.land" target="_blank" className="underline">Claudio Angrigiani</a></p>
       </footer>
     </main>
