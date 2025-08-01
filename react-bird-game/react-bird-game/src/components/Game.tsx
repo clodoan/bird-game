@@ -87,6 +87,19 @@ export default function Game() {
     gameObjects.current.t = 0;
     gameObjects.current.frameCount = 0;
     
+    // Add initial clouds
+    if (gameObjects.current.images.clouds) {
+      for (let i = 0; i < 5; i++) {
+        gameObjects.current.clouds.push(
+          new Cloud(
+            gameObjects.current.images.clouds, 
+            Math.floor(Math.random() * CANVAS_WIDTH), 
+            Math.floor(Math.random() * CANVAS_HEIGHT)
+          )
+        );
+      }
+    }
+    
     if (gameObjects.current.bottle) {
       gameObjects.current.bottle.x = Math.floor(Math.random() * (CANVAS_WIDTH - 128));
       gameObjects.current.bottle.y = Math.floor(Math.random() * (CANVAS_HEIGHT - 128));
@@ -224,7 +237,7 @@ export default function Game() {
     }
 
     // Spawn monsters
-    if (Math.random() < 0.02) {
+    if (Math.random() < 0.005) {
       monsters.push(new Monster(images.monster, CANVAS_WIDTH, Math.floor(Math.random() * CANVAS_HEIGHT)));
       sounds.monsterAppear?.play();
     }

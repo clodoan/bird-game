@@ -54,18 +54,22 @@ export class Sprite {
     this.vy += this.ydrag;
     this.vx += this.xdrag;
     
-    // Endless canvas y
+    // Endless canvas y - reset velocity when wrapping
     if (this.y < 0) {
       this.y = 600; // height
+      this.vy = 0; // Reset vertical velocity to prevent acceleration
     } else if (this.y > 600) {
       this.y = 0;
+      this.vy = 0; // Reset vertical velocity to prevent acceleration
     }
 
-    // Endless canvas x
+    // Endless canvas x - reset velocity when wrapping
     if (this.x > 800) { // width
       this.x = 0;
+      this.vx = 0; // Reset horizontal velocity to prevent acceleration
     } else if (this.x < 0) {
       this.x = 800;
+      this.vx = 0; // Reset horizontal velocity to prevent acceleration
     }
   }
 
